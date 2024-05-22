@@ -1,3 +1,7 @@
+module Main (
+    main
+) where
+
 import Text.Printf (printf)
 import System.IO (hFlush, stdout)
 
