@@ -14,10 +14,10 @@ loop =
     let action "?" = putStrLn help >> loop
         action "!" = return ()
         action cmd = putStrLn (parse cmd) >> loop
-    in
+    in do
     console "> "
-    >> getLine
-    >>= \v -> action v
+    v <- getLine
+    action v
 
 main = do
     putStrLn "Bem vinde ao tableaux-Haskell!"
