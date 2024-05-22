@@ -1,14 +1,33 @@
 import Text.Printf (printf)
+import System.IO (hFlush, stdout)
 
-main2 = do
-   putStrLn "Seu nome e idade:"
-   nome <- getLine
-   idade <- getLine
-   putStrLn $ printf "nome: %s, idade: %s" nome idade
+console text = 
+    putStr text
+    >> hFlush stdout
 
-main = 
-    putStrLn "Seu nome:"
+help =
+    "Ajudas!"
+
+parse cmd =
+    "Verdade"
+
+action "?" =
+    putStrLn help
+    >> loop
+action "!" =
+    return ()
+action cmd =
+    putStrLn (parse cmd)
+    >> loop
+
+loop =
+    console "> "
     >> getLine
-    >>= \nome -> 
-        getLine
-        >>= \idade -> putStrLn $ printf "Falae %s, idade: %s" nome idade
+    >>= \v -> action v
+
+main = do
+    putStrLn "Bem vinde ao tableaux-Haskell!"
+    putStrLn "Digite uma formula lógica abaixo e veja siua resolução."
+    putStrLn "Ou digite '?' e veja como definimos as operções"
+    loop
+
