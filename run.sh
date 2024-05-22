@@ -1,3 +1,3 @@
-ghc main.hs --make parse.hs
-./main
-rm main.hi main.o main
+ghc -o tableaux-haskell Main 
+./tableaux-haskell
+rm *.hi *.o tableaux-haskell
