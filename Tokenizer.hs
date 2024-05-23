@@ -1,4 +1,6 @@
 module Tokenizer(
+    tokenize,
+    Token(..)
 ) where
 
 data Token = 
@@ -19,4 +21,3 @@ tokenize ('!':tail) = TNot : tokenize tail
 tokenize (' ':tail) = tokenize tail
 tokenize (char:tail) =
     TLiteral char:tokenize tail
-

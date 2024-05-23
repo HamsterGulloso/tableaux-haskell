@@ -5,7 +5,7 @@ module Main (
 import Text.Printf (printf)
 import System.IO (hFlush, stdout)
 
-import Parse (parse)
+import Parser (parse)
 
 console text = 
     putStr text
@@ -18,12 +18,9 @@ loop =
     let action "?" = putStrLn help >> loop
         action "!" = return ()
         action cmd = 
-            let parsedCmd = parse cmd in 
-            putStrLn
-                (if length parsedCmd == 1 then
-                    show (head parsedCmd)
-                else
-                    "Erro, Formula incoerente")
+            case parse cmd of
+                Just exp -> print exp
+                Nothing -> putStrLn "Formula ruim"
             >> loop
     in do
     console "> "
