@@ -17,7 +17,14 @@ help =
 loop =
     let action "?" = putStrLn help >> loop
         action "!" = return ()
-        action cmd = putStrLn (parse cmd) >> loop
+        action cmd = 
+            let parsedCmd = parse cmd in 
+            putStrLn
+                (if length parsedCmd == 1 then
+                    show (head parsedCmd)
+                else
+                    "Erro, Formula incoerente")
+            >> loop
     in do
     console "> "
     v <- getLine
