@@ -1,4 +1,6 @@
-module ProofTree (Expression) where
+module ProofTree (
+    Expression(..)
+) where
 
 data Expression =
     Literal String
