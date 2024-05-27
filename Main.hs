@@ -12,7 +12,11 @@ console text =
     >> hFlush stdout
 
 help =
-    "Ajudas!"
+    "Nosso interpretador segue a notação polonesa reversa\n" ++
+    "'&' => '∧'\n" ++
+    "'|' => '∨'\n" ++
+    "'!' => '¬'\n" ++
+    "Ex.: 'a b & c | a ! |' => '(a∧b)∨c∨¬a'"
 
 loop =
     let action "?" = putStrLn help >> loop
@@ -29,6 +33,6 @@ loop =
 
 main = do
     putStrLn "Bem vinde ao tableaux-Haskell!"
-    putStrLn "Digite uma formula lógica abaixo e veja siua resolução."
+    putStrLn "Digite uma formula lógica abaixo e veja sua resolução."
     putStrLn "Ou digite '?' e veja como definimos as operções"
     loop

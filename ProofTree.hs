@@ -19,11 +19,11 @@ instance Show Expression where
             showinner (And e1 e2) = show (And e1 e2)
             showinner e = "(" ++ show e ++ ")"
         in
-        showinner e1 ++ "^" ++ showinner e2
+        showinner e1 ++ "∧" ++ showinner e2
     show (Or e1 e2) =
         let showinner (Literal l) = l
             showinner (Not e) = show (Not e)
             showinner (Or e1 e2) = show (Or e1 e2)
             showinner e = "(" ++ show e ++ ")"
         in
-        showinner e1 ++ "V" ++ showinner e2
+        showinner e1 ++ "∨" ++ showinner e2
