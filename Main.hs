@@ -16,7 +16,9 @@ help =
     "'&' => '∧'\n" ++
     "'|' => '∨'\n" ++
     "'!' => '¬'\n" ++
-    "Ex.: 'a b & c | a ! |' => '(a∧b)∨c∨¬a'"
+    "'->' => '→'\n" ++
+    "Ex.: 'a b & c | a ! ->' => '(a∧b)∨c → ¬a'\n" ++
+    "Caso queira sair digite apenas '!'"
 
 loop =
     let action "?" = putStrLn help >> loop
