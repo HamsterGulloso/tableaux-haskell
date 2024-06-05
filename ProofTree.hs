@@ -16,6 +16,7 @@ data ProofTree =
 
 type Value = (Expression, Bool)
 
+-- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 searchOpen :: ProofTree -> Maybe ProofTree
 searchOpen EmptyNode = Nothing
 searchOpen b =
