@@ -1,29 +1,36 @@
 module ProofTree (
-    Expression(..)
 ) where
 
-data Expression =
-    Literal String
-    | Not Expression
-    | And Expression Expression
-    | Or Expression Expression
+import Expression
+import Data.Maybe (isJust)
 
-instance Show Expression where
-    show (Literal l) = l
-    show (Not (Literal l)) = "¬" ++ l
-    show (Not (Not e)) = "¬" ++ show (Not e)
-    show (Not e) = "¬(" ++ show e ++ ")"
-    show (And e1 e2) =
-        let showinner (Literal l) = l
-            showinner (Not e) = show (Not e)
-            showinner (And e1 e2) = show (And e1 e2)
-            showinner e = "(" ++ show e ++ ")"
-        in
-        showinner e1 ++ "∧" ++ showinner e2
-    show (Or e1 e2) =
-        let showinner (Literal l) = l
-            showinner (Not e) = show (Not e)
-            showinner (Or e1 e2) = show (Or e1 e2)
-            showinner e = "(" ++ show e ++ ")"
-        in
-        showinner e1 ++ "∨" ++ showinner e2
+data ProofTree = 
+    Branch {
+        expression :: Expression,
+        value :: Bool,
+        open :: Bool,
+        leftBranch :: ProofTree,
+        rightBranch :: ProofTree
+    }
+    | EmptyNode
+
+type Value = (Expression, Bool)
+
+searchOpen :: ProofTree -> Maybe ProofTree
+searchOpen EmptyNode = Nothing
+searchOpen b =
+    let lres = searchOpen (leftBranch b)
+        rres = searchOpen (rightBranch b) in
+    if open b then
+        Just b
+    else if isJust lres then
+        lres
+    else if isJust rres then
+        rres
+    else
+        Nothing
+
+    
+
+createTree :: ProofTree -> Expression -> ProofTree
+createTree p  = Leaf 
