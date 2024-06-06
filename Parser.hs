@@ -1,6 +1,6 @@
 module Parser(parse) where
 
-import ProofTree (Expression(..))
+import Expression (Expression(..))
 import Tokenizer 
 
 parse :: String -> Maybe Expression

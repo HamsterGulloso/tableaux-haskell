@@ -27,3 +27,14 @@ instance Show Expression where
             showinner e = "(" ++ show e ++ ")"
         in
         showinner e1 ++ "∨" ++ showinner e2
+
+instance Eq Expression where
+    (==) (Literal a) (Literal b) = a == b
+    (==) (Not a) (Not b) = a == b
+    (==) (And a b) (And c d) =
+        (a == c && b == d) ||
+        (a == d && b == c)
+    (==) (Or a b) (Or c d) =
+        (a == c && b == d) ||
+        (a == d && b == c)
+    (==) _ _ = False
