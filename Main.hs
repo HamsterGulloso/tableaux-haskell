@@ -19,11 +19,16 @@ evaluate cmd =
             evalTrue = ProofTree.evaluateTree truePT []
             evalFalse = ProofTree.evaluateTree falsePT []
         in
-        printf "%s\n%s\n%s\n%s"
+        printf "\n%s\n\n%s\n%s\n\n%s\n%s\n"
+            ("Formula inserida: " ++ show exp)
+            (case evalTrue of
+                ProofTree.OK -> "Formula não é contraditória"
+                _ -> "Formula é contraditória, " ++ show evalTrue)
             (show truePT)
-            (show evalTrue)
+            (case evalFalse of
+                ProofTree.OK -> "Formula não é tauntológica"
+                _ -> "Formula é tauntológica, " ++ show evalFalse)
             (show falsePT)
-            (show evalFalse)
 
 console text = 
     putStr text
@@ -35,7 +40,7 @@ help =
     "'|' => '∨'\n" ++
     "'!' => '¬'\n" ++
     "'->' => '→'\n" ++
-    "Ex.: 'a b & c | a ! ->' => '(a∧b)∨c → ¬a'\n" ++
+    "Ex.: 'a b & c | a ! ->' => '(a∧b)∨c→¬a'\n" ++
     "Caso queira sair digite apenas '!'"
 
 loop =
@@ -43,10 +48,6 @@ loop =
         action "!" = return ()
         action cmd = 
             putStrLn (evaluate cmd) >> loop
-            -- case parse cmd of
-            --    Just exp -> print exp
-            --    Nothing -> putStrLn "Formula ruim"
-            -- >> loop
     in do
     console "> "
     v <- getLine

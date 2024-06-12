@@ -1,5 +1,6 @@
 module ProofTree (
     ProofTree(..),
+    Eval(..),
     createTree,
     evaluate,
     evaluateTree
@@ -22,10 +23,7 @@ data ProofTree =
     EmptyNode
 
 instance Show ProofTree where
-    show EmptyNode = ""
-    show (Branch v EmptyNode) = show v
-    show (Branch v n) = show v ++ "->" ++ show n
-    show (Split v l r) = show v ++ "->" ++ "{" ++ show l ++ "}{" ++ show r ++ "}"
+    show = printTree
 
 
 createTree :: [Value] -> ProofTree
@@ -58,7 +56,7 @@ data Eval =
 
 instance Show Eval where
     show OK = "OK"
-    show (Contradiction e) = "Contradiction: " ++ show e
+    show (Contradiction e) = "Contradição: " ++ show e
 
 evaluate :: [Value] -> Eval
 evaluate [] = OK
@@ -78,12 +76,28 @@ evaluateTree (Split (Literal lit, b) left right) values =
         evalRight = evaluateTree right ((Literal lit, b):values)
     in
     case evalLeft of
-        Contradiction _ -> evalLeft
-        OK -> evalRight
+        Contradiction _ -> evalRight
+        OK -> OK
 evaluateTree (Split _ left right) values =
     let evalLeft = evaluateTree left values
         evalRight = evaluateTree right values
     in
     case evalLeft of
-        Contradiction _ -> evalLeft
-        OK -> evalRight
+        Contradiction _ -> evalRight
+        OK -> OK
+
+
+printTree :: ProofTree -> String
+printTree tree = printTreeIntern tree 0
+
+
+printTreeIntern :: ProofTree -> Int -> String
+printTreeIntern EmptyNode _ = ""
+printTreeIntern (Branch (expression, bool) EmptyNode) indent =
+    (if bool then "⊤" else "⊥") ++ ":" ++ show expression
+printTreeIntern (Branch (expression, bool) next) indent =
+    (if bool then "⊤" else "⊥") ++ ":" ++ show expression ++ " → " ++ printTreeIntern next indent
+printTreeIntern (Split (expression, bool) left right) indent =
+    (if bool then "⊤" else "⊥") ++ ":" ++ show expression ++ "\n" ++
+        replicate (indent + 4) ' ' ++ printTreeIntern left (indent + 4) ++ "\n" ++
+        replicate (indent + 4) ' ' ++ printTreeIntern right (indent + 4)
