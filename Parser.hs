@@ -18,10 +18,10 @@ parseTokens stack (TLiteral str:tokens) =
     parseTokens (Literal str:stack) tokens
 parseTokens (top:stack) (TNot:tokens) =
     parseTokens (Not top:stack) tokens
-parseTokens (t1:t2:stack) (TAnd:tokens) =
+parseTokens (t2:t1:stack) (TAnd:tokens) =
     parseTokens (And t1 t2:stack) tokens
-parseTokens (t1:t2:stack) (TOr:tokens) =
+parseTokens (t2:t1:stack) (TOr:tokens) =
     parseTokens (Or t1 t2:stack) tokens
-parseTokens (t1:t2:stack) (TArrow:tokens) =
-    parseTokens (Or t2 (Not t1):stack) tokens
+parseTokens (t2:t1:stack) (TArrow:tokens) =
+    parseTokens (Then t1 t2:stack) tokens
 parseTokens _ _ = []

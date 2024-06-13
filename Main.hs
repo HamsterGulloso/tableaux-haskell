@@ -14,21 +14,21 @@ evaluate cmd =
         "Formula ruim"
     else
         let Just exp = parsed 
-            truePT = ProofTree.createTree [(exp, True)] 
-            falsePT = ProofTree.createTree [(exp, False)] 
-            evalTrue = ProofTree.evaluateTree truePT []
-            evalFalse = ProofTree.evaluateTree falsePT []
+            truePT = ProofTree.createTree exp True 
+            falsePT = ProofTree.createTree exp False 
+            evalTrue = ProofTree.evaluateTree truePT
+            evalFalse = ProofTree.evaluateTree falsePT
         in
-        printf "\n%s\n\n%s\n%s\n\n%s\n%s\n"
+        printf "\n%s\n\n%s\n%s\n\n%s\n%s\n\n%s"
             ("Formula inserida: " ++ show exp)
-            (case evalTrue of
-                ProofTree.OK -> "Formula não é contraditória"
-                _ -> "Formula é contraditória, " ++ show evalTrue)
             (show truePT)
-            (case evalFalse of
-                ProofTree.OK -> "Formula não é tauntológica"
-                _ -> "Formula é tauntológica, " ++ show evalFalse)
+            (show evalTrue)
             (show falsePT)
+            (show evalFalse)
+            (case (evalTrue, evalFalse) of
+                (ProofTree.OK, ProofTree.Contradiction _) -> "A fomula é tauntológica"
+                (ProofTree.Contradiction _, ProofTree.OK) -> "A fomula é contraditória"
+                _ -> "A formula é satisfazivel" )
 
 console text = 
     putStr text

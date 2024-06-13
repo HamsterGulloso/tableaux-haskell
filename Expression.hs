@@ -7,6 +7,7 @@ data Expression =
     | Not Expression
     | And Expression Expression
     | Or Expression Expression
+    | Then Expression Expression
 
 instance Show Expression where
     show (Literal l) = l
@@ -27,6 +28,11 @@ instance Show Expression where
             showinner e = "(" ++ show e ++ ")"
         in
         showinner e1 ++ "∨" ++ showinner e2
+    show (Then e1 e2) =
+        let showinner (Then e1 e2) = "(" ++ show (Then e1 e2) ++ ")"
+            showinner e = show e
+        in
+        showinner e1 ++ "→" ++ showinner e2
 
 instance Eq Expression where
     (==) (Literal a) (Literal b) = a == b
@@ -37,4 +43,6 @@ instance Eq Expression where
     (==) (Or a b) (Or c d) =
         (a == c && b == d) ||
         (a == d && b == c)
+    (==) (Then a b) (Then c d) =
+        a == c && b == d
     (==) _ _ = False

@@ -9,19 +9,11 @@ data Token =
     | TOr
     | TNot
     | TArrow
-    | TOpenParam
-    | TCloseParam
     deriving(Show)
 
 isAlphaNumeric = (`elem` (['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9']))
 
 tokenize "" = Just []
-tokenize ('(':tail) =
-    tokenize tail >>= \t -> 
-        Just $ TOpenParam:t
-tokenize (')':tail) =
-    tokenize tail >>= \t ->
-        Just $ TCloseParam:t
 tokenize ('&':tail) =
     tokenize tail >>= \t -> 
         Just $ TAnd:t
