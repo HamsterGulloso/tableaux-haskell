@@ -158,19 +158,19 @@ evaluateTreeIntern (Split (Literal lit, b, number) left right) values =
         evalRight = evaluateTreeIntern right ((Literal lit, b, number):values)
     in
     case evalLeft of
-        OK -> evalRight
+        OK -> OK
         Contradiction cleft -> case evalRight of
             Contradiction cright -> Contradiction (cright ++ cleft)
-            OK -> evalLeft
+            OK -> OK
 evaluateTreeIntern (Split _ left right) values =
     let evalLeft = evaluateTreeIntern left values
         evalRight = evaluateTreeIntern right values
     in
     case evalLeft of
-        OK -> evalRight
+        OK -> OK
         Contradiction cleft -> case evalRight of
             Contradiction cright -> Contradiction (cright ++ cleft)
-            OK -> evalLeft
+            OK -> OK
 
 
 printTree :: ProofTree -> String
