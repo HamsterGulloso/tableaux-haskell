@@ -11,33 +11,39 @@ data Token =
     | TArrow
     deriving(Show)
 
-isAlphaNumeric = (`elem` (['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9']))
+isAlphaNumeric = (`elem` (['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9'] ++ "_@#$%*"))
 
-tokenize "" = Just []
+tokenize :: String -> Either String [Token] 
+tokenize "" = Right []
 tokenize ('&':tail) =
     tokenize tail >>= \t -> 
-        Just $ TAnd:t
+        Right $ TAnd:t
 tokenize ('|':tail) =
     tokenize tail >>= \t -> 
-        Just $ TOr:t
+        Right $ TOr:t
 tokenize ('!':tail) =
     tokenize tail >>= \t -> 
-        Just $ TNot:t
+        Right $ TNot:t
 tokenize (' ':tail) = tokenize tail
 tokenize ('-':'>':tail) =
     tokenize tail >>= \tokens ->
-        Just $ TArrow : tokens
+        Right $ TArrow : tokens
 tokenize (c1:c2:tail) =
     tokenize (c2:tail) >>= \t ->
         if isAlphaNumeric c1 then
             if isAlphaNumeric c2 then
                 let ((TLiteral str):tokens) = t in
-                Just $ TLiteral (c1:str): tokens
+                Right $ TLiteral (c1:str): tokens
             else
-                Just $ TLiteral [c1]:t
-        else Nothing
+                Right $ TLiteral [c1]:t
+        else if isAlphaNumeric c2 then
+            let ((TLiteral str):tokens) = t in
+            Left $ "Token inválido: " ++ (c1:str)
+        else
+            Left $ "Token inválido: " ++ [c1]
+            
 tokenize (c1:tail) =
     if isAlphaNumeric c1 then
-        Just [TLiteral [c1]]
+        Right [TLiteral [c1]]
     else
-        Nothing
+        Left $ "Token inválido: " ++ [c1]
