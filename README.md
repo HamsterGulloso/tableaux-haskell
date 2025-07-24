@@ -33,7 +33,7 @@ $p \to (p \to (q \to p))$
     [1 ⊥:p→(p→(q→p))] → [2 ⊤:p] → [3 ⊥:p→(q→p)] → [4 ⊤:p] → [5 ⊥:q→p] → [6 ⊤:q] → [7 ⊥:p]
     Contradições: 7 e 4
 
-    A fomula é tauntológica
+    A formula é tauntológica
 
 ### Exemplo 2:
 $(a\to b)\land(b\to a)$
@@ -77,4 +77,19 @@ $(a\to b) \land a \land \lnot b$
         [3.1 ⊥:¬b] → [3.2 ⊤:b]
     OK
 
-    A fomula é contraditória
+    A formula é contraditória
+
+## Melhorias no retorno das entradas
+Foram adicionados algumas mensagens de erro para o usuário
+
+### Expressão ruim:
+    > a b c ! |
+
+    Expressão ruim
+    Expressão formada: b∨¬c
+    Tokens não utilizados: [a]
+
+### Expressão vazia:
+    >
+
+    Expressão vazia
